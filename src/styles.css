@@ -1,0 +1,20 @@
+/* Basic app styles - optimized for iPad landscape */
+html, body, #app { height: 100%; }
+body { 
+  margin: 0; 
+  font-family: Roboto, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial;
+  overflow-x: hidden;
+  background-color: rgb(28,28,30);
+}
+
+/* Dark background theme */
+.dark-bg {
+  background-color: rgb(28,28,30) !important;
+}
+
+/* iPad landscape optimization (1024x768) */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .v-main {
+    max-width: 100%;
+  }
+}
