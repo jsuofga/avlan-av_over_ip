@@ -117,14 +117,19 @@ export default {
       }
       
       // --- 3. Check for Max Limit ---
-      const maxInputs = 16 // Adjust based on your needs
+      // Determine max allowed inputs based on mode
+      const maxInputs = this.stateStore.txCount === 0
+        ? this.stateStore.rxCount
+        : this.stateStore.txCount;
+
       if (this.stateStore.inputNames.length < maxInputs) {
-        this.stateStore.inputNames.push(name)
-        this.inputName = ''
+        this.stateStore.inputNames.push(name);
+        this.inputName = '';
       } else {
-        this.inputNameError = `Max allowed inputs is ${maxInputs}`
-        this.inputName = ''
+        this.inputNameError = ` Max allowed inputs is ${maxInputs}`;
+        this.inputName = '';
       }
+  
     },
     
     trash(index) {

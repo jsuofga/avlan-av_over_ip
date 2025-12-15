@@ -22,7 +22,7 @@
       Switch not detected
     </v-chip>
 
-    <v-chip color="blue" text-color="white">AVLAN 1.1</v-chip>
+    <v-chip color="blue" text-color="white">AVLAN 1.2</v-chip>
 
   </v-app-bar>
 
