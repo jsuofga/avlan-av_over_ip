@@ -5,68 +5,68 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/components/Home.vue')
+    component: () => import('@/pages/Home.vue')
   },
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: () => import('@/components/Dashboard.vue')
+    component: () => import('@/pages/Dashboard.vue')
   },
   {
     path: '/update',
     name: 'update',
-    component: () => import('@/components/Update.vue')
+    component: () => import('@/pages/Update.vue')
   },
   {
     path: '/namezones',
     name: 'namezones',
-    component: () => import('@/components/NameZones.vue')
+    component: () => import('@/pages/NameZones.vue')
   },
   {
     path: '/nameoutputs',
     name: 'nameoutputs',
-    component: () => import('@/components/NameOutputs.vue')
+    component: () => import('@/pages/NameOutputs.vue')
   },
   {
     path: '/nameinputs',
     name: 'nameinputs',
-    component: () => import('@/components/NameInputs.vue')
+    component: () => import('@/pages/NameInputs.vue')
   },
   {
     path: '/zone/:index',
     name: 'zone',
-    component: () => import('@/components/Zone.vue')
+    component: () => import('@/pages/Zone.vue')
   },
   {
     path: '/timer',
     name: 'timer',
-    component: () => import('@/components/Timer.vue')
+    component: () => import('@/pages/Timer.vue')
   },
   {
     path: '/videoinputs',
     name: 'videoinputs',
-    component: () => import('@/components/VideoInputs.vue')
+    component: () => import('@/pages/VideoInputs.vue')
   },
   {
     path: '/ipaddress',
     name: 'ipaddress',
-    component: () => import('@/components/Ipaddress.vue')
+    component: () => import('@/pages/Ipaddress.vue')
   },
   {
     path: '/itach',
     name: 'itach',
-    component: () => import('@/components/Itach.vue')
+    component: () => import('@/pages/Itach.vue')
   },
   {
     path: '/remotecontrol/',
     name: 'remotecontrol',
-    component: () => import('@/components/RemoteControl.vue'),
+    component: () => import('@/pages/RemoteControl.vue'),
     props: true
   },
   {
     path: '/favoritechannels',
     name: 'favoritechannels',
-    component: () => import('@/components/Favoritechannels.vue')
+    component: () => import('@/pages/Favoritechannels.vue')
   }
 ]
 
