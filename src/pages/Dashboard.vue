@@ -2,7 +2,7 @@
   <div class="dashboard">
 
       <div id="vital-stat" class="grid-container">
-          <div class="grid-item"> Model : {{stateStore.status.model}}</div>
+          <div class="grid-item model-display-text"> Model : {{stateStore.status.model}}</div>
           <div class="grid-item"> IP : {{stateStore.status.SwitchIPAddress}}</div>
           <div class="grid-item"> Temperature : {{stateStore.status.Temperature}} &#8451;</div>
           <div class="grid-item">Power Supply : {{stateStore.status.PS1Stat}}</div>
@@ -471,6 +471,10 @@ export default {
   flex-direction: column;
   align-items: center;
   border:1px solid #2c3e50
+}
+.model-display-text {
+  font-size: 0.75em; /* Smaller font size */
+  white-space: nowrap; /* Prevent text wrapping */
 }
 .cbs-black{
    background-color: rgb(28,28,30);

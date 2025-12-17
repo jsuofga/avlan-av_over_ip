@@ -106,7 +106,7 @@ export default {
         await fetch(`http://${serverURL}:3000/write/UserSwitchConfig/${JSON.stringify(switchIP)}`)
         
         // Show success message
-        this.feedbackMessage = "Switch configuration saved successfully!"
+        this.feedbackMessage = "Switch IP address saved. Now connecting..."
         
         // Navigate to dashboard after short delay
         setTimeout(() => {

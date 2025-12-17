@@ -73,3 +73,7 @@ The control backend requires a running Node-RED instance.
     *   `src/components/`: Contains smaller, reusable UI components used across different pages.
 *   **Authentication:** A simple authentication guard is implemented in `src/router/index.js`. It checks an `isAuthenticated` flag in the Pinia store before allowing access to admin-level routes.
 *   **Styling:** Global styles are in `src/styles.css`, with component-specific styles likely co-located within the `.vue` files. The project uses the [MDI font library](https://pictogrammers.com/library/mdi/) for icons.
+
+## 4. Build Output Clarification
+
+*   **`index.html` in `dist/`:** When `npm run build` is executed, Vite takes the `index.html` file from the project root (`./index.html`), processes it (e.g., injects script and link tags for bundled assets), and places the resulting production-ready `index.html` file into the `dist/` directory. This is the expected behavior for a Vite build, and ensures that the built application has a correct entry point.
