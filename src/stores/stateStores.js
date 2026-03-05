@@ -23,6 +23,7 @@ export const useStateStore = defineStore('stateStore', {
     preset2Created: false,
     preset3Created: false,
     iTachUnits: [],
+    dtvUnits:[],
     videoInputsWithRemoteAccess: [],
     remoteSelectedIndex: 0,
     irFavChannels: [],
@@ -312,6 +313,31 @@ export const useStateStore = defineStore('stateStore', {
           return {
             itachIPs: this.iTachUnits,
             set_top_box_count: setTopBoxCount
+          }
+        }
+        return null
+      } catch (error) {
+        console.log('No existing iTach config found')
+        return null
+      }
+    },
+    async load_DTV_Config() {
+      try {
+        const serverURL = location.hostname
+        const response = await fetch(`http://${serverURL}:1880/read/User_DTV_IPs`)
+        const config = await response.json()
+        
+        if (config) {
+          const dtvKeys = Object.keys(config).filter(key => key.startsWith('dtv'))
+          this.dtvUnits = dtvKeys.map(key => config[key])
+          
+              
+          // Populate videoInputsWithRemoteAccess array
+          // Same length as inputNames, true for indices < set_top_box_count
+          this.videoInputsWithRemoteAccess = this.inputNames.map((_, index) => index < this.dtvUnits.length)
+          return {
+            dtvIPs:this.dtvUnits,
+            
           }
         }
         return null

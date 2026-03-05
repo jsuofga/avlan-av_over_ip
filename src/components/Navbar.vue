@@ -22,7 +22,7 @@
       Switch not detected
     </v-chip>
 
-    <v-chip color="blue" text-color="white">AVLAN 1.3</v-chip>
+    <v-chip color="blue" text-color="white">AVLAN 1.3-DTVIP</v-chip>
 
   </v-app-bar>
 
@@ -85,13 +85,15 @@
           </v-btn>
         </template>
       </v-list-item>
-      <v-list-item  prepend-icon="mdi-router-wireless" title="Global Cache Itach" @click="navigate('/itach')"></v-list-item>
+      <!-- <v-list-item  prepend-icon="mdi-router-wireless" title="Global Cache Itach" @click="navigate('/itach')"></v-list-item> -->
+      <v-list-item  prepend-icon="mdi-set-top-box" title="DirecTV IP Control" @click="navigate('/directvip')"></v-list-item>
+
       <v-list-item 
-        :disabled="stateStore.iTachUnits.length === 0"
+        :disabled="stateStore.iTachUnits.length === 0 && stateStore.dtvUnits.length ===0"
         prepend-icon="mdi-star" 
         title="Favorite Channels" 
         @click="navigate('/favoritechannels')"
-        :style="stateStore.iTachUnits.length === 0 ? 'opacity:0.4;pointer-events:none;' : ''"
+        :style="stateStore.iTachUnits.length === 0 && stateStore.dtvUnits.length === 0 ? 'opacity:0.4;pointer-events:none;' : ''"
       ></v-list-item>
       <v-list-item
         :disabled="!node_red_timer_poe_installed || !/-.*p/i.test(stateStore.status.model)"

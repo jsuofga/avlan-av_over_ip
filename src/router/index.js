@@ -57,10 +57,21 @@ const routes = [
     name: 'itach',
     component: () => import('@/pages/Itach.vue')
   },
+    {
+    path: '/directvip',
+    name: 'directvip',
+    component: () => import('@/pages/DirectvIP.vue')
+  },
   {
     path: '/remotecontrol/',
     name: 'remotecontrol',
     component: () => import('@/pages/RemoteControl.vue'),
+    props: true
+  },
+  {
+    path: '/dtv_ip_remotecontrol/',
+    name: 'dtv_ip_remotecontrol',
+    component: () => import('@/pages/DTV_IP_RemoteControl.vue'),
     props: true
   },
   {

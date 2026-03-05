@@ -58,7 +58,9 @@ export default {
   async created() {
     // 
     await this.stateStore.get_inputNames()
-    await this.stateStore.loadItachConfig()
+    // await this.stateStore.loadItachConfig()
+    await this.stateStore.load_DTV_Config()
+
   },
   data() {
     return {
@@ -92,7 +94,8 @@ export default {
     },
     openRemote(index) {
       this.stateStore.remoteSelectedIndex = index
-      this.$router.push({ name: 'remotecontrol', params: { remote: index + 1 } })
+      // this.$router.push({ name: 'remotecontrol', params: { remote: index + 1 } })  // for IR control Global Cache
+      this.$router.push({ name: 'dtv_ip_remotecontrol' })  // for IP control DirecTV
     }
   },
 
