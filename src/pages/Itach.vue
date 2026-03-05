@@ -210,6 +210,7 @@ export default {
     },
 
     async save() {
+      const serverURL = `${location.hostname}:3000`
       this.saveError = ''
       
       if (!this.selected) {
@@ -218,7 +219,10 @@ export default {
       }
       
       if (this.itachIPs.length === 0) {
-        this.saveError = 'Please add at least one iTach IP address'
+        this.saveError = 'No iTach devices'
+        let itachAddresses = {}
+        await fetch(`http://${serverURL}/write/UserItachIPs/${JSON.stringify(itachAddresses)}`)
+        this.$router.push({ name: 'home' })
         return
       }
       
@@ -243,7 +247,6 @@ export default {
         return
       }
 
-      const serverURL = `${location.hostname}:3000`
 
       try {
         let itachAddresses = {}
