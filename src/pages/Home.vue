@@ -131,7 +131,8 @@ export default {
     switchAll() {
       this.stateStore.selectedDisplay = {
         rxId: 'all',
-        name: 'ALL TVs'
+        name: 'ALL TVs',
+        zoneIndex: 'all'
       }
       this.$router.push({ name: 'videoinputs' })
     },

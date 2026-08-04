@@ -16,7 +16,8 @@ export const useStateStore = defineStore('stateStore', {
     inputNames: [],
     selectedDisplay: {
       rxId: null,
-      name: ''
+      name: '',
+      zoneIndex: null
     },
     selectedInput: null,
     preset1Created: false,

@@ -1,7 +1,16 @@
 <template>
-  <div class="video-inputs-page">
+  <div class="video-inputs-page" @click="handlePageClick">
     <v-card class="video-inputs-card" elevation="0">
       <v-card-title class="video-inputs-title">
+        <v-btn
+          prepend-icon="mdi-chevron-left"
+          variant="outlined"
+          color="white"
+          class="back-btn"
+          @click="goBackToZone"
+        >
+          Back
+        </v-btn>
         Select Video for - {{ selectedDisplayName }}
       </v-card-title>
       
@@ -93,6 +102,17 @@ export default {
     openRemote(index) {
       this.stateStore.remoteSelectedIndex = index
       this.$router.push({ name: 'remotecontrol', params: { remote: index + 1 } })
+    },
+    goBackToZone() {
+      const zoneIndex = this.stateStore.selectedDisplay.zoneIndex !== undefined && this.stateStore.selectedDisplay.zoneIndex !== null
+        ? this.stateStore.selectedDisplay.zoneIndex
+        : 'all'
+      this.$router.push({ name: 'zone', params: { index: zoneIndex } })
+    },
+    handlePageClick(event) {
+      if (!event.target.closest('.v-btn')) {
+        this.goBackToZone()
+      }
     }
   },
 
@@ -122,12 +142,29 @@ export default {
 }
 
 .video-inputs-title {
+  position: relative;
   font-size: 2rem !important;
   font-weight: bold;
   text-align: center;
   padding: 20px;
   background-color: transparent;
   color: white;
+}
+
+.back-btn {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 1px solid white !important;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgb(0, 122, 255) !important;
+  color: rgb(0, 122, 255) !important;
 }
 
 .video-inputs-content {

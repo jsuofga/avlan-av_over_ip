@@ -95,14 +95,16 @@ export default {
     selectDisplay(tv) {
       this.stateStore.selectedDisplay = {
         rxId: tv.rxId,
-        name: tv.name
+        name: tv.name,
+        zoneIndex: this.zoneIndex
       }
       this.$router.push({ name: 'videoinputs' })
     },
     zoneTitleClicked() {
       this.stateStore.selectedDisplay = {
         rxId: 'rxS_in_a_zone',
-        name: this.zoneName 
+        name: this.zoneName,
+        zoneIndex: this.zoneIndex
       }
       this.$router.push({ name: 'videoinputs' })
     }
