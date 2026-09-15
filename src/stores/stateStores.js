@@ -61,29 +61,16 @@ export const useStateStore = defineStore('stateStore', {
       const nodeRedURL = `${location.hostname}:1880`
       
       try {
-        const response = await fetch(`http://${serverURL}/read/UserPreset${preset}`)
-        const presetData = await response.json()
-        console.log(`Loading Preset ${preset}`, presetData)
-        
-        // Apply each TV's preset input
-        for (let key in presetData) {
-          const tvNumber = parseInt(key.replace('tv', ''))
-          const inputVlan = presetData[key] + 1
-          
-          console.log(`Switching TV ${tvNumber} to VLAN ${inputVlan}`)
-          
-          // Switch each RX to its preset VLAN
-          await fetch(`http://${nodeRedURL}/switchRX/${tvNumber}/vlan/${inputVlan}`)
-        }
-        
+         await fetch(`http://${nodeRedURL}/switchRX/UserPreset/${preset}`)
+             
         // Show success snackbar
         this.snackbar = {
           show: true,
-          message: `Preset ${preset} loaded successfully`,
+          message: `Preset ${preset}`,
           color: 'success'
         }
         
-        return { success: true, message: `Preset ${preset} loaded successfully` }
+        return { success: true, message: `Preset ${preset}` }
       } catch (error) {
         console.error(`Error loading Preset ${preset}:`, error)
         
