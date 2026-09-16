@@ -22,7 +22,7 @@
       Switch not detected
     </v-chip>
 
-    <v-chip color="blue" text-color="white">AVLAN 1.6</v-chip>
+    <v-chip color="blue" text-color="white">AVLAN 1.6 DTV-IP</v-chip>
 
   </v-app-bar>
 
@@ -86,6 +86,9 @@
         </template>
       </v-list-item>
       <v-list-item  prepend-icon="mdi-router-wireless" title="Global Cache Itach" @click="navigate('/itach')"></v-list-item>
+     
+      <v-list-item  prepend-icon="mdi-satellite-uplink" title="DirecTV IP" @click="navigate('/directvip')"></v-list-item>
+
       <v-list-item 
         :disabled="stateStore.iTachUnits.length === 0"
         prepend-icon="mdi-star" 

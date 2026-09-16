@@ -58,6 +58,11 @@ const routes = [
     component: () => import('@/pages/Itach.vue')
   },
   {
+    path: '/directvip',
+    name: 'directvip',
+    component: () => import('@/pages/DirectvIP.vue')
+  },
+  {
     path: '/remotecontrol/',
     name: 'remotecontrol',
     component: () => import('@/pages/RemoteControl.vue'),
@@ -76,6 +81,7 @@ const adminRoutes = [
   '/nameoutputs',
   '/nameinputs',
   '/itach',
+  '/directvip',
   '/favoritechannels',
   '/timer',
   '/update'
