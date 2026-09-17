@@ -180,23 +180,7 @@ export default {
     async save() {
       const nodeRedURL = `${location.hostname}:1880`
       this.saveError = ''
-      
-      // if (this.directvIPs.length === 0) {
-      //   try {
-      //     await fetch(`http://${nodeRedURL}/writeUserDirectvIPs`, {
-      //       method: 'POST',
-      //       headers: {
-      //         'Content-Type': 'application/json'
-      //       },
-      //       body: JSON.stringify({})
-      //     })
-      //   } catch (error) {
-      //     console.log('Error clearing DirecTV config', error)
-      //   }
-      //   this.$router.push({ name: 'home' })
-      //   return
-      // }
-      
+     
       let hasInvalid = false
       this.directvIPs.forEach((ip, index) => {
         if (!this.isValidIP(ip)) {

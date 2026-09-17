@@ -82,7 +82,7 @@ export default {
   },
   data() {
     return {
-      channels: [...Array(999).keys()],
+      channels: [...Array(9999).keys()],
       selected: '',
       errorMessage: ''
     }

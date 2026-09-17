@@ -2,42 +2,42 @@
   <div class="remote-control-container">
     <v-card class="remote-control-card" elevation="4">
       <v-card-title class="text-h6 text-center" style="color: white;">
-        Remote for {{remoteName}}
+        IP Control for {{remoteName}}
       </v-card-title>
       
       <v-card-text>
         <!-- Power and Navigation Grid -->
         <div class="grid-container1">
           <div class="grid-item1">
-            <v-btn icon size="large" @click="otherBtnPressed('on')" color="green" id="power-on">
+            <v-btn icon size="large" @click="otherBtnPressed('poweron')" color="green" id="power-on">
               <v-icon size="large">mdi-power</v-icon>
             </v-btn>
           </div>
           <div class="grid-item1"></div>
           <div class="grid-item1">
-            <v-btn icon size="large" @click="otherBtnPressed('cursor_up')">
+            <v-btn icon size="large" @click="otherBtnPressed('up')">
               <v-icon size="x-large">mdi-chevron-up</v-icon>
             </v-btn>
           </div>
           <div class="grid-item1"></div>
           <div class="grid-item1">
-            <v-btn icon size="large" @click="otherBtnPressed('off')" color="red" id="power-off">
+            <v-btn icon size="large" @click="otherBtnPressed('poweroff')" color="red" id="power-off">
               <v-icon size="large">mdi-power</v-icon>
             </v-btn>
           </div>
           <div class="grid-item1"></div>
           <div class="grid-item1">
-            <v-btn icon size="large" @click="otherBtnPressed('cursor_left')">
+            <v-btn icon size="large" @click="otherBtnPressed('left')">
               <v-icon size="x-large">mdi-chevron-left</v-icon>
             </v-btn>
           </div>
           <div class="grid-item1">
-            <v-btn class="round-btn select-btn" size="x-large" color="yellow" @click="otherBtnPressed('cursor_enter')" variant="flat">
+            <v-btn class="round-btn select-btn" size="x-large" color="yellow" @click="otherBtnPressed('select')" variant="flat">
               Select
             </v-btn>
           </div>
           <div class="grid-item1">
-            <v-btn icon size="large" @click="otherBtnPressed('cursor_right')">
+            <v-btn icon size="large" @click="otherBtnPressed('right')">
               <v-icon size="x-large">mdi-chevron-right</v-icon>
             </v-btn>
           </div>
@@ -45,7 +45,7 @@
           <div class="grid-item1"></div>
           <div class="grid-item1"></div>
           <div class="grid-item1">
-            <v-btn icon size="large" @click="otherBtnPressed('cursor_down')">
+            <v-btn icon size="large" @click="otherBtnPressed('down')">
               <v-icon size="x-large">mdi-chevron-down</v-icon>
             </v-btn>
           </div>
@@ -70,7 +70,7 @@
             <v-btn class="round-btn" @click="numberBtnPressed(3)" variant="flat">3</v-btn>
           </div>
           <div class="grid-item2">
-            <v-btn icon size="large" @click="otherBtnPressed('ch_up')">
+            <v-btn icon size="large" @click="otherBtnPressed('chanup')">
               <v-icon size="x-large">mdi-chevron-up</v-icon>
             </v-btn>
           </div>
@@ -102,7 +102,7 @@
             <v-btn class="round-btn" @click="numberBtnPressed(9)" variant="flat">9</v-btn>
           </div>
           <div class="grid-item2">
-            <v-btn icon size="large" @click="otherBtnPressed('ch_down')">
+            <v-btn icon size="large" @click="otherBtnPressed('chandown')">
               <v-icon size="x-large">mdi-chevron-down</v-icon>
             </v-btn>
           </div>
@@ -159,8 +159,11 @@ export default {
     return { stateStore }
   },
   async created() {
-    // Load favorite channels data
+    // Load favorite channels data and DirecTV IP config
     await this.stateStore.loadUserFavChannels()
+    if (!this.stateStore.directvIPs || this.stateStore.directvIPs.length === 0) {
+      await this.stateStore.loadDTVIpConfig()
+    }
   },
   
   data() {
@@ -181,47 +184,30 @@ export default {
     favChStations() {
       return this.stateStore.favChStations
     },
-    unit() {
-      // remoteSelectedIndex is 0-based, convert to 1-based for calculation
-      const remoteNum = this.stateStore.remoteSelectedIndex + 1
-      return Math.trunc(remoteNum / 4) + 1  // itach unit number (3 ports per unit)
-    },
-    port() {
-      // remoteSelectedIndex is 0-based, convert to 1-based for calculation
-      const remoteNum = this.stateStore.remoteSelectedIndex + 1
-      // itach port number
-      if ((remoteNum % 3) != 0) {
-        return remoteNum % 3
-      } else {
-        return 3
-      }
+    dtvURL() {
+      const ip = this.stateStore.directvIPs && this.stateStore.directvIPs[this.stateStore.remoteSelectedIndex]
+      return ip ? `${ip}:8080` : ''
     }
   },
 
   methods: {
     numberBtnPressed(_number) {
-      this.numberPressed = `btn_${_number}`
-      const serverURL = `${location.hostname}:1880`
-      this.snackbarMessage = 'IR sent'
+      this.numberPressed = `${_number}`
+      this.snackbarMessage = 'IP Sent'
       this.snackbar = true
-      console.log(`http://${serverURL}/sendir/unit/${this.unit}/port/${this.port}/ir/${this.numberPressed}`)
-      fetch(`http://${serverURL}/sendir/unit/${this.unit}/port/${this.port}/ir/${this.numberPressed}`)
+      console.log(`http://${this.dtvURL}/remote/processKey?key=${this.numberPressed}`)
     },
     otherBtnPressed(_button) {
-      this.btnPressed = `btn_${_button}`
-      const serverURL = `${location.hostname}:1880`
-      this.snackbarMessage = 'IR sent'
+      this.btnPressed = `${_button}`
+      this.snackbarMessage = 'IP sent'
       this.snackbar = true
-      console.log(`http://${serverURL}/sendir/unit/${this.unit}/port/${this.port}/ir/${this.btnPressed}`)
-      fetch(`http://${serverURL}/sendir/unit/${this.unit}/port/${this.port}/ir/${this.btnPressed}`)
+      console.log(`http://${this.dtvURL}/remote/processKey?key=${this.btnPressed}`)
     },
     favoriteBtnPressed(_favorite) {
       let favCh = this.favChStations[_favorite]
-      const serverURL = `${location.hostname}:1880`
-      this.snackbarMessage = 'IR sent'
+      this.snackbarMessage = 'IP sent'
       this.snackbar = true
-      console.log(`http://${serverURL}/sendir/unit/${this.unit}/port/${this.port}/irfavorite/${favCh}`)
-      fetch(`http://${serverURL}/sendir/unit/${this.unit}/port/${this.port}/irfavorite/${favCh}`)
+      console.log(`http://${this.dtvURL}/tv/tune?major=${favCh}`)
     }
   }
 }

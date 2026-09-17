@@ -24,7 +24,9 @@ export const useStateStore = defineStore('stateStore', {
     preset2Created: false,
     preset3Created: false,
     iTachUnits: [],
+    directvIPs: [],
     videoInputsWithRemoteAccess: [],
+    videoInputsWithDirectvIPAccess:[],
     remoteSelectedIndex: 0,
     irFavChannels: [],
     favChNames: [],
@@ -305,6 +307,39 @@ export const useStateStore = defineStore('stateStore', {
         return null
       } catch (error) {
         console.log('No existing iTach config found')
+        return null
+      }
+    },
+
+    async loadDTVIpConfig() {
+      console.log('Loading DirecTV IP config')
+      try {
+      const nodeRedURL = `${location.hostname}:1880`
+        const response = await fetch(`http://${nodeRedURL}/read/UserDirectvIPs`)
+        const config = await response.json()
+        console.log('DirectvIP config from server:', config  )
+        if (config) {
+          const directvKeys = Object.keys(config)
+            .filter(key => key.startsWith('directv') && key.includes('ipaddress'))
+            .sort((a, b) => {
+              const numA = parseInt(a.replace(/\D/g, '')) || 0
+              const numB = parseInt(b.replace(/\D/g, '')) || 0
+              return numA - numB
+            })
+          this.directvIPs = directvKeys.map(key => config[key])
+          
+           console.log("DirectvIPs",this.directvIPs)
+          // Populate videoInputsWithDirectvIPAccess array
+          // Same length as inputNames, true for indices < number of directvIPs
+          this.videoInputsWithDirectvIPAccess = this.inputNames.map((_, index) => index < this.directvIPs.length)
+          console.log(this.videoInputsWithDirectvIPAccess)
+          return {
+            directvIPs: this.directvIPs,
+          }
+        }
+        return null
+      } catch (error) {
+        console.log('No existing DirecTV config found')
         return null
       }
     },

@@ -90,11 +90,11 @@
       <v-list-item  prepend-icon="mdi-satellite-uplink" title="DirecTV IP" @click="navigate('/directvip')"></v-list-item>
 
       <v-list-item 
-        :disabled="stateStore.iTachUnits.length === 0"
+        :disabled="stateStore.directvIPs.length === 0"
         prepend-icon="mdi-star" 
         title="Favorite Channels" 
         @click="navigate('/favoritechannels')"
-        :style="stateStore.iTachUnits.length === 0 ? 'opacity:0.4;pointer-events:none;' : ''"
+        :style="stateStore.directvIPs.length === 0 ? 'opacity:0.4;pointer-events:none;' : ''"
       ></v-list-item>
       <v-list-item
         :disabled="!node_red_timer_poe_installed || !/-.*p/i.test(stateStore.status.model)"

@@ -30,14 +30,14 @@
               <!-- <span class="input-vlan">{{ getInputVlan(index) }}</span> -->
             </div>
             <v-btn
-              v-if="stateStore.videoInputsWithRemoteAccess[index]"
+              v-if="stateStore.videoInputsWithDirectvIPAccess[index]"
               icon
               size="x-small"
               class="corner-button"
               color="blue"
               @click.stop="openRemote(index)"
             >
-              <v-icon size="small">mdi-remote</v-icon>
+              <v-icon size="x-large">mdi-ip</v-icon>
             </v-btn>
           </v-btn>
         </div>
@@ -67,7 +67,8 @@ export default {
   async created() {
     // 
     await this.stateStore.get_inputNames()
-    await this.stateStore.loadItachConfig()
+    // await this.stateStore.loadItachConfig()
+    await this.stateStore.loadDTVIpConfig()
   },
   data() {
     return {
