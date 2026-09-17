@@ -25,6 +25,7 @@ export const useStateStore = defineStore('stateStore', {
     preset3Created: false,
     iTachUnits: [],
     directvIPs: [],
+    dtvsTuned: [],
     videoInputsWithRemoteAccess: [],
     videoInputsWithDirectvIPAccess:[],
     remoteSelectedIndex: 0,
@@ -112,6 +113,17 @@ export const useStateStore = defineStore('stateStore', {
         }
         
         return { success: false }
+      }
+    },
+    async getDTVsTuned() {
+     const nodeRedURL = `${location.hostname}:1880`
+      try {
+        const response = await fetch(`http://${nodeRedURL}/read/dtvs_tuned`)
+        const myJson = await response.json()
+        this.dtvsTuned = myJson
+      
+      } catch (error) {
+   
       }
     },
     async getStatus() {

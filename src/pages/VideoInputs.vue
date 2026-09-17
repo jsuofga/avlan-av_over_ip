@@ -27,12 +27,15 @@
             <div class="button-content">
               <span class="input-number">P{{ index + 1 }}</span>
               <span class="input-name">{{ input }}</span>
-              <!-- <span class="input-vlan">{{ getInputVlan(index) }}</span> -->
+              <span v-if="stateStore.videoInputsWithDirectvIPAccess[index]" 
+                class="text-white">
+                {{ stateStore.dtvsTuned[index].callsign}}
+              </span>
             </div>
             <v-btn
               v-if="stateStore.videoInputsWithDirectvIPAccess[index]"
               icon
-              size="x-small"
+              size="large"
               class="corner-button"
               color="blue"
               @click.stop="openRemote(index)"
@@ -69,6 +72,12 @@ export default {
     await this.stateStore.get_inputNames()
     // await this.stateStore.loadItachConfig()
     await this.stateStore.loadDTVIpConfig()
+    
+    // Call it immediately if you don't want to wait the first 5 seconds
+    await this.stateStore.getDTVsTuned();
+
+    // Run every 5000 milliseconds
+    this.poll_getDTVsTuned = setInterval(this.stateStore.getDTVsTuned, 5000);
   },
   data() {
     return {
@@ -116,6 +125,13 @@ export default {
       }
     }
   },
+
+   beforeUnmount() {
+    if (this.poll_getDTVsTuned) {
+      clearInterval(this.poll_getDTVsTuned)
+      console.log('Stopped dtv tuned polling')
+    }
+  }
 
 }
 </script>
