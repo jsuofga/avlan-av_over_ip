@@ -196,18 +196,21 @@ export default {
       this.snackbarMessage = 'IP Sent'
       this.snackbar = true
       console.log(`http://${this.dtvURL}/remote/processKey?key=${this.numberPressed}`)
+      fetch(`http://${this.dtvURL}/remote/processKey?key=${this.numberPressed}`)
     },
     otherBtnPressed(_button) {
       this.btnPressed = `${_button}`
       this.snackbarMessage = 'IP sent'
       this.snackbar = true
       console.log(`http://${this.dtvURL}/remote/processKey?key=${this.btnPressed}`)
+      fetch(`http://${this.dtvURL}/remote/processKey?key=${this.btnPressed}`)
     },
     favoriteBtnPressed(_favorite) {
       let favCh = this.favChStations[_favorite]
       this.snackbarMessage = 'IP sent'
       this.snackbar = true
       console.log(`http://${this.dtvURL}/tv/tune?major=${favCh}`)
+      fetch(`http://${this.dtvURL}/tv/tune?major=${favCh}`)
     }
   }
 }
