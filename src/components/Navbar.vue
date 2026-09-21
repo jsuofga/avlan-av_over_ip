@@ -22,7 +22,7 @@
       Switch not detected
     </v-chip>
 
-    <v-chip color="blue" text-color="white">AVLAN 1.6 DTV-IP</v-chip>
+    <v-chip color="blue" text-color="white">AVLAN 1.7 DTV-IP</v-chip>
 
   </v-app-bar>
 

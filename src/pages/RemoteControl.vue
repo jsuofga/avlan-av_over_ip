@@ -1,7 +1,16 @@
 <template>
   <div class="remote-control-container">
     <v-card class="remote-control-card" elevation="4">
-      <v-card-title class="text-h6 text-center" style="color: white;">
+      <v-card-title class="remote-control-title">
+        <v-btn
+          prepend-icon="mdi-chevron-left"
+          variant="outlined"
+          color="white"
+          class="back-btn"
+          @click="goBackToVideoInputs"
+        >
+          Back
+        </v-btn>
         IP Control for {{remoteName}}
       </v-card-title>
       
@@ -112,11 +121,16 @@
               <span style="color: white;">Exit</span>
             </v-btn>
           </div>
-          <div class="grid-item2"></div>
+          <div class="grid-item2">
+            <v-btn icon size="large" @click="otherBtnPressed('dash')">
+              DASH
+            </v-btn>
+          </div>
           <div class="grid-item2">
             <v-btn class="round-btn" @click="numberBtnPressed(0)" variant="flat">0</v-btn>
           </div>
           <div class="grid-item2"></div>
+    
           <div class="grid-item2">
             <v-btn @click="otherBtnPressed('enter')" variant="flat" color="blue" class="btn-control">
               <span style="color: white;">Enter</span>
@@ -211,6 +225,9 @@ export default {
       this.snackbar = true
       console.log(`http://${this.dtvURL}/tv/tune?major=${favCh}`)
       fetch(`http://${this.dtvURL}/tv/tune?major=${favCh}`)
+    },
+    goBackToVideoInputs() {
+      this.$router.push({ name: 'videoinputs' })
     }
   }
 }
@@ -233,6 +250,31 @@ export default {
   max-width: 600px;
   /* padding: 20px; */
   background-color: transparent !important;
+}
+
+.remote-control-title {
+  position: relative;
+  font-size: 1.25rem !important;
+  font-weight: 500;
+  text-align: center;
+  padding: 16px;
+  color: white;
+}
+
+.back-btn {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 1px solid white !important;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgb(0, 122, 255) !important;
+  color: rgb(0, 122, 255) !important;
 }
 
 .grid-container1 {

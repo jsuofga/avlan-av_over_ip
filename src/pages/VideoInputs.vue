@@ -27,9 +27,9 @@
             <div class="button-content">
               <span class="input-number">P{{ index + 1 }}</span>
               <span class="input-name">{{ input }}</span>
-              <span v-if="stateStore.videoInputsWithDirectvIPAccess[index]" 
+              <span v-if="stateStore.videoInputsWithDirectvIPAccess[index] && stateStore.dtvsTuned && stateStore.dtvsTuned[index]" 
                 class="text-white">
-                {{ stateStore.dtvsTuned[index].callsign}}
+                {{ stateStore.dtvsTuned[index].callsign }}
               </span>
             </div>
             <v-btn

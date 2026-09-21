@@ -17,6 +17,9 @@
             <span class="port-number">P{{ stateStore.txCount + tv.rxId }}</span>
             <span class="tv-name">{{ tv.name }}</span>
             <span class="port-vlan">{{ getCurrentInput(tv.rxId) }}</span>
+            <span v-if="getDTVTunedForRx(tv.rxId)" class="dtv-callsign">
+              {{ getDTVTunedForRx(tv.rxId) }}
+            </span>
           </div>
         </button>
       </div>
@@ -44,7 +47,14 @@ export default {
     if (!this.stateStore.inputNames.length) {
       await this.stateStore.get_inputNames()
     }
+    if (!this.stateStore.videoInputsWithDirectvIPAccess.length) {
+      await this.stateStore.loadDTVIpConfig()
+    }
    
+    // Fetch and poll dtvsTuned
+    await this.stateStore.getDTVsTuned()
+    this.poll_getDTVsTuned = setInterval(this.stateStore.getDTVsTuned, 5000)
+
     // Load TV data from server
     const serverURL = location.hostname
     try {
@@ -60,7 +70,8 @@ export default {
   data() {
     return {
       zoneIndex: null,
-      tvList: []
+      tvList: [],
+      poll_getDTVsTuned: null
     }
   },
   computed: {
@@ -81,16 +92,36 @@ export default {
     }
   },
   methods: {
-    getCurrentInput(rxId) {
+    getCurrentInputIndex(rxId) {
       const portIndex = this.stateStore.txCount + rxId - 1
       if (this.stateStore.status.PortVlanMembership && 
           this.stateStore.status.PortVlanMembership[portIndex]) {
         const vlanId = this.stateStore.status.PortVlanMembership[portIndex]
         // VLAN ID maps to input port number (vlanId - 2 = input index)
-        if (this.stateStore.inputNames && this.stateStore.inputNames[vlanId - 2]) {
-          return this.stateStore.inputNames[vlanId - 2 ]
-        }
+        return vlanId - 2
       }
+      return -1
+    },
+    getCurrentInput(rxId) {
+      const inputIndex = this.getCurrentInputIndex(rxId)
+      if (inputIndex >= 0 && this.stateStore.inputNames && this.stateStore.inputNames[inputIndex]) {
+        return this.stateStore.inputNames[inputIndex]
+      }
+      return ''
+    },
+    getDTVTunedForRx(rxId) {
+      const inputIndex = this.getCurrentInputIndex(rxId)
+      if (
+        inputIndex >= 0 &&
+        this.stateStore.videoInputsWithDirectvIPAccess &&
+        this.stateStore.videoInputsWithDirectvIPAccess[inputIndex] &&
+        this.stateStore.dtvsTuned &&
+        this.stateStore.dtvsTuned[inputIndex] &&
+        this.stateStore.dtvsTuned[inputIndex].callsign
+      ) {
+        return this.stateStore.dtvsTuned[inputIndex].callsign
+      }
+      return ''
     },
     selectDisplay(tv) {
       this.stateStore.selectedDisplay = {
@@ -109,7 +140,12 @@ export default {
       this.$router.push({ name: 'videoinputs' })
     }
   },
-  
+  beforeUnmount() {
+    if (this.poll_getDTVsTuned) {
+      clearInterval(this.poll_getDTVsTuned)
+      console.log('Stopped dtv tuned polling in Zone')
+    }
+  }
 }
 </script>
 
@@ -164,11 +200,12 @@ export default {
 }
 
 .tv-button {
-  height: 50px;
+  height: 65px;
   width: 100px;
   position: relative;
   border-radius: 10px;
-  border:1px solid white 
+  border: 1px solid white;
+  padding: 4px 2px;
 }
 .button-content {
   display: flex;
@@ -177,6 +214,7 @@ export default {
   justify-content: center;
   width: 100%;
   height: 100%;
+  gap: 2px;
 }
 .port-number {
   position: absolute;
@@ -195,14 +233,32 @@ export default {
   font-weight: normal;
   color: white;
   text-align: center;
+  white-space: nowrap;
+  max-width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
 }
 .port-vlan {
-  position: absolute;
-  bottom: 2px;
-  left: 50%;
-  transform: translateX(-50%);
   font-size: 0.65rem;
-  color: white;
+  color: #E0E0E0;
+  text-align: center;
+  white-space: nowrap;
+  max-width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
+}
+.dtv-callsign {
+  font-size: 0.65rem;
+  color: #64B5F6;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  max-width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
 }
 
 /* iPad landscape specific optimizations (1024x768) */
