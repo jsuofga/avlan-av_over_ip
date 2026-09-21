@@ -27,10 +27,14 @@
             <div class="button-content">
               <span class="input-number">P{{ index + 1 }}</span>
               <span class="input-name">{{ input }}</span>
-              <span v-if="stateStore.videoInputsWithDirectvIPAccess[index] && stateStore.dtvsTuned && stateStore.dtvsTuned[index]" 
-                class="text-white">
-                {{ stateStore.dtvsTuned[index].callsign }}
-              </span>
+              <template v-if="stateStore.videoInputsWithDirectvIPAccess[index] && stateStore.dtvsTuned && stateStore.dtvsTuned[index]">
+                <span v-if="stateStore.dtvsTuned[index].callsign" class="input-callsign">
+                  {{ stateStore.dtvsTuned[index].callsign }}
+                </span>
+                <span v-if="stateStore.dtvsTuned[index].title" class="input-title" :title="stateStore.dtvsTuned[index].title">
+                  {{ stateStore.dtvsTuned[index].title }}
+                </span>
+              </template>
             </div>
             <v-btn
               v-if="stateStore.videoInputsWithDirectvIPAccess[index]"
@@ -204,6 +208,9 @@ export default {
   position: relative;
   border-radius: 10px;
   border: 1px solid white !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  padding: 4px !important;
 }
 
 .input-button:hover {
@@ -218,6 +225,9 @@ export default {
   justify-content: center;
   width: 100%;
   height: 100%;
+  padding: 14px 4px 6px 4px;
+  box-sizing: border-box;
+  gap: 2px;
 }
 
 .input-number {
@@ -234,6 +244,37 @@ export default {
   font-weight: normal;
   color: white;
   text-align: center;
+  white-space: nowrap;
+  max-width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.input-callsign {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #64B5F6;
+  text-align: center;
+  white-space: nowrap;
+  max-width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
+}
+
+.input-title {
+  font-size: 0.6rem;
+  color: #E0E0E0;
+  text-align: center;
+  width: 100%;
+  max-width: 92%;
+  line-height: 1.15;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .input-vlan {
